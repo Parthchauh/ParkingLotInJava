@@ -16,6 +16,13 @@ The Parking Lot Management System is a Java-based microproject designed to effic
 
 6. **User-Friendly Interface**: The command-line interface is intuitive and easy to use, guiding users through various functionalities with clear prompts and messages.
 
+## OutPut Images:
+![Parking Lot Management System Screenshot-1](![Screenshot (7)](https://github.com/Parthchauh/ParkingLotInJava/assets/136223855/b13d19cc-0cad-4665-bf2c-35d56c616cae)
+)
+![Parking Lot Management System Screenshot-2](![Screenshot (8)](https://github.com/Parthchauh/ParkingLotInJava/assets/136223855/750c3544-0e9d-4ec9-9cbb-33809d9d163c)
+)
+
+
 ## Technical Details
 
 - **Programming Language**: Java
