@@ -54,13 +54,13 @@ A Java microproject for managing a parking lot system with functionalities for p
 ## Usage
 
 1. **Clone the repository:**
-   ```sh
+   ```
    git clone https://github.com/your-username/ParkingLotJavaMicroproject.git
    
-2.compile the Java files
+## compile the Java files
    -javac ParkingLotDemo.java
   
-3.Run the application
+## Run the application
    -java ParkingLotDemo
 
   Example
@@ -92,8 +92,7 @@ This project is licensed under the MIT License.
 Support
 Give a ⭐️ if this project helped you!
 
-### Instructions to Add Image
-1. output screen shots
+### output screen shots
 <p align="center" width="100%">
     <img width="33%" src="![image](https://github.com/Parthchauh/ParkingLotInJava/assets/136223855/affa7824-ac0e-455f-ada2-deee92df31c9)">
     <img width="33%" src="![image](https://github.com/Parthchauh/ParkingLotInJava/assets/136223855/cca7823c-d81b-4c41-bdb7-2d5acb7a2728)
