@@ -1,17 +1,5 @@
 # Parking Lot Management System 🚗🅿️
 
-![Stars Badge](https://img.shields.io/github/stars/your-username/ParkingLotJavaMicroproject?style=flat-square)
-![Forks Badge](https://img.shields.io/github/forks/your-username/ParkingLotJavaMicroproject?style=flat-square)
-![Pull Requests Badge](https://img.shields.io/github/issues-pr/your-username/ParkingLotJavaMicroproject?style=flat-square)
-![Issues Badge](https://img.shields.io/github/issues/your-username/ParkingLotJavaMicroproject?style=flat-square)
-![Contributors Badge](https://img.shields.io/github/contributors/your-username/ParkingLotJavaMicroproject?style=flat-square)
-![License Badge](https://img.shields.io/github/license/your-username/ParkingLotJavaMicroproject?style=flat-square)
-
-Loved the project? Please visit our [Website](https://awesome-github-readme-profile.netlify.app)
-
-This repo aims to collect all `awesome beautiful README profiles` and make your profile look good & inspire others.
-If you are interested, create a PR to add your README profile here.
-
 If you like this repo, please click the ⭐️
 
 ## Contents
