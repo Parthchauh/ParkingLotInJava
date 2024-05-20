@@ -1,90 +1,36 @@
-# Parking Lot Management System 🚗🅿️
+# Parking Lot Management System
 
-If you like this repo, please click the ⭐️
+The Parking Lot Management System is a Java-based microproject designed to efficiently manage parking lot operations. This system provides users with the ability to park and unpark vehicles while maintaining track of available slots and offering a user-friendly interface for interactions. Its primary goal is to streamline the process of managing parking spaces, ensuring an organized and convenient experience for both operators and users of the parking lot.
 
-## Contents
-- [Project Description](#project-description)
-- [Features](#features)
-- [Usage](#usage)
-- [Classes](#classes)
-- [Example](#example)
-- [License](#license)
-- [Support](#support)
+## Key Features
 
-## Project Description
+1. **Park a Vehicle**: Users can park their vehicles by specifying the type (car, truck, or bike), registration number, and their preferred floor and slot. The system checks availability and confirms parking or suggests alternatives if the preferred slot is occupied.
 
-A Java microproject for managing a parking lot system with functionalities for parking, unparking, and viewing available slots.
+2. **Unpark a Vehicle**: Users can unpark their vehicles using either a ticket ID or registration number. The system calculates parking duration and charges, if applicable, and updates slot availability.
 
-## Features
+3. **View Parked Vehicles**: Operators can view a list of all parked vehicles, including type, registration number, and location within the parking lot.
 
-- Park a vehicle with a preferred floor and slot.
-- Unpark a vehicle using a ticket ID or registration number.
-- View parked vehicles.
-- Display parking availability.
-- **Additional Features:**
-  - User-defined favorite slots and floors.
-  - Advanced search options (e.g., by vehicle type).
-  - Real-time parking slot updates.
-  - Parking duration and charge calculation.
-  - Support for different vehicle types (car, truck, bike).
-  - Admin interface for managing the parking lot.
-  - Slot reservation system.
-  - Notification system for slot availability.
-  - Monthly and daily reports generation.
-  - Integration with payment gateways for parking fees.
-  - User authentication and profiles.
-  - QR code generation for tickets.
-  - Slot recommendations based on usage patterns.
-  - Multilingual support.
-  - Mobile app integration.
-  - Emergency support for vehicle issues.
+4. **Display Parking Availability**: Users can check current slot availability across different floors, aiding in decision-making for vehicle parking.
+
+5. **Search Vehicles**: The system allows searching for vehicles by ticket ID or registration number, facilitating the location of parked vehicles.
+
+6. **User-Friendly Interface**: The command-line interface is intuitive and easy to use, guiding users through various functionalities with clear prompts and messages.
+
+## Technical Details
+
+- **Programming Language**: Java
+- **Data Structures**: Lists and custom classes are utilized to manage parking slots, vehicles, and their associations.
+- **Time Management**: Entry time of parked vehicles is recorded to accurately calculate parking duration.
 
 ## Usage
 
-1. **Clone the repository:**
-   ```
-   git clone https://github.com/your-username/ParkingLotJavaMicroproject.git
-   
-## compile the Java files
-   -javac ParkingLotDemo.java
-  
-## Run the application
-   -java ParkingLotDemo
-
-  Example
-      Choose an option:
-      1. View parked vehicles
-      2. Park a vehicle
-      3. Display parking availability
-      4. Unpark a vehicle
-      5. Exit
-      2
-
-  Enter vehicle type (car/truck/bike):
-    car
-    Enter vehicle registration number:
-    GJ23AK2032
-    Enter preferred floor:
-    1
-    Enter preferred slot:
-    2
-    Vehicle parked successfully at Floor 1, Slot 2
-    Ticket ID: PARKINGLOT_1_2
-
-Contribution
-Contributions are always welcome! Please create a PR to add functionalities or improve the existing code.
-
-License
-This project is licensed under the MIT License.
-
-Support
-Give a ⭐️ if this project helped you!
-
-### output screen shots
-<p align="center" width="100%">
-    <img width="33%" src="![image](https://github.com/Parthchauh/ParkingLotInJava/assets/136223855/affa7824-ac0e-455f-ada2-deee92df31c9)">
-    <img width="33%" src="![image](https://github.com/Parthchauh/ParkingLotInJava/assets/136223855/cca7823c-d81b-4c41-bdb7-2d5acb7a2728)
-">
-</p>
-
-Feel free to customize the template further to better suit your project and preferences.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/parking-lot.git
+2. Output of this repo:
+   Choose an option:
+    1. View parked vehicles
+    2. Park a vehicle
+    3. Display parking availability
+    4. Unpark a vehicle
+    5. Exit
