@@ -19,7 +19,12 @@ public class ParkingLotDemo
             System.out.println("2. Park a vehicle");
             System.out.println("3. Display parking availability");
             System.out.println("4. Unpark a vehicle");
-            System.out.println("5. Exit");
+            System.out.println("5. Find a vehicle");
+            System.out.println("6. Reserve a slot");
+            System.out.println("7. Release a reserved slot");
+            System.out.println("8. View reservation status");
+            System.out.println("9. View parking charges");
+            System.out.println("10. Exit");
 
             try {
                 int choice = scanner.nextInt();
@@ -39,6 +44,21 @@ public class ParkingLotDemo
                         unparkVehicle(parkingLot, scanner);
                         break;
                     case 5:
+                        parkingLot.findVehicle();
+                        break;
+                    case 6:
+                        parkingLot.reserveSlot();
+                        break;
+                    case 7:
+                        parkingLot.releaseReservedSlot();
+                        break;
+                    case 8:
+                        parkingLot.viewReservationStatus();
+                        break;
+                    case 9:
+                        parkingLot.viewParkingCharges();
+                        break;
+                    case 10:
                         System.out.println("Exiting...");
                         return;
                     default:
