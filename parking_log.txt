@@ -1,0 +1,5 @@
+[2024-05-21 16:03:53] Vehicle parked - Type: car, Registration: GJ23AK2030, Floor: 1, Slot: 1
+[2024-05-21 16:07:48] Vehicle unparked - Ticket ID: PR1234_1_1
+[2024-05-21 17:08:11] Vehicle parked - Type: car, Registration: GJ23AK2300, Floor: 1, Slot: 1
+[2024-05-21 18:23:19] Vehicle parked - Type: car, Registration: GJ32AK2303, Floor: 1, Slot: 1
+[2024-05-21 18:23:56] Vehicle unparked - Ticket ID: PR1234_1_1
