@@ -13,25 +13,56 @@ class Slot {
     Vehicle vehicle;
     String ticketId;
     LocalDateTime entryTime;
+    boolean isReserved; // Added variable
 
-    Slot(String type) {
+    // Default constructor
+    public Slot() {
+        this.type = null;
+        this.vehicle = null;
+        this.ticketId = null;
+        this.entryTime = null;
+        this.isReserved = false; // Initialize to false
+    }
+
+    // Constructor with type argument
+    public Slot(String type) {
         this.type = type;
         this.vehicle = null;
         this.ticketId = null;
         this.entryTime = null;
+        this.isReserved = false; // Initialize to false
+    }
+
+    // Method to calculate parking charge
+    double calculateParkingCharge() {
+        // Define your calculation logic here
+        // For example:
+        return 10.0; // Default return value
     }
 }
 
 class Vehicle {
     String type;
     String registration;
+    String id; // Added variable
+    String licensePlate; // Added variable
 
-    Vehicle(String type, String registration) {
+    public Vehicle(String type, String registration) {
         this.type = type;
         this.registration = registration;
+        this.id = registration; // Assuming registration is the vehicle ID
+        this.licensePlate = registration; // Assuming registration is the license plate
+    }
+
+    // Getter methods
+    public String getId() {
+        return id;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
     }
 }
-
 public class ParkingLot {
     static final int MAX_FLOORS = 10; // Define the maximum number of floors
     static final int SLOTS_PER_FLOOR = 10;
@@ -43,7 +74,17 @@ public class ParkingLot {
     int availableBikeSlots;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
+    // Constructor
+    public ParkingLot(int floors, int slotsPerFloor) {
+        slots = new ArrayList<>();
+        for (int i = 0; i < floors; i++) {
+            ArrayList<Slot> floorSlots = new ArrayList<>();
+            for (int j = 0; j < slotsPerFloor; j++) {
+                floorSlots.add(new Slot());
+            }
+            slots.add(floorSlots);
+        }
+    }
     ParkingLot(String parkingLotId, int nFloors, int carSlotsPerFloor, int truckSlotsPerFloor, int bikeSlotsPerFloor) {
         this.parkingLotId = parkingLotId;
         slots = new ArrayList<>();
@@ -76,6 +117,101 @@ public class ParkingLot {
             e.printStackTrace();
         }
     }
+    
+   public void findVehicle() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter vehicle ID or license plate: ");
+        String vehicleId = scanner.nextLine();
+
+        for (int floor = 0; floor < slots.size(); floor++) {
+            for (int slotNum = 0; slotNum < slots.get(floor).size(); slotNum++) {
+                Slot slot = slots.get(floor).get(slotNum);
+                if (slot.vehicle != null && (slot.vehicle.getId().equals(vehicleId) || slot.vehicle.getLicensePlate().equals(vehicleId))) {
+                    System.out.printf("Vehicle found on Floor %d, Slot %d%n", floor + 1, slotNum + 1);
+                    System.out.println();//empty
+                    return;
+                }
+            }
+        }
+        System.out.println("Vehicle not found.");
+        System.out.println();//space
+    }
+public void reserveSlot() {
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter floor number: ");
+    int floor = scanner.nextInt() - 1;
+    System.out.print("Enter slot number: ");
+    int slotNum = scanner.nextInt() - 1;
+
+    if (slots.get(floor).get(slotNum).isReserved) {
+        System.out.println("Slot is already reserved.");
+        System.out.println();
+    } else {
+        slots.get(floor).get(slotNum).isReserved = true;
+        System.out.println("Slot reserved successfully.");
+        System.out.println();
+    }
+}
+public void releaseReservedSlot() {
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter floor number: ");
+    int floor = scanner.nextInt() - 1;
+    System.out.print("Enter slot number: ");
+    int slotNum = scanner.nextInt() - 1;
+
+    if (!slots.get(floor).get(slotNum).isReserved) {
+        System.out.println("Slot is not reserved.");
+    } else {
+        slots.get(floor).get(slotNum).isReserved = false;
+        System.out.println("Reserved slot released successfully.");
+    }
+}
+public void viewReservationStatus() {
+    // Find the maximum width of each column
+    int[] columnWidths = new int[slots.get(0).size() + 1]; // +1 for the "Floor" column
+    for (int floor = 0; floor < slots.size(); floor++) {
+        for (int slotNum = 0; slotNum < slots.get(floor).size(); slotNum++) {
+            Slot slot = slots.get(floor).get(slotNum);
+            String status = slot.isReserved ? "Reserved" : "Available";
+            if (status.length() > columnWidths[slotNum + 1]) {
+                columnWidths[slotNum + 1] = status.length();
+            }
+        }
+    }
+
+    System.out.println("+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+");
+    System.out.println("| Floor     | Slot 1    | Slot 2    | Slot 3    | Slot 4    | Slot 5    | Slot 6    | Slot 7    | Slot 8    | Slot 9    | Slot 10   |");
+    System.out.println("+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+");
+
+    // Print each floor and its slots
+    for (int floor = 0; floor < slots.size(); floor++) {
+        System.out.print("+--------+");
+        for (int i = 0; i < columnWidths.length; i++) {
+            System.out.print(String.format("%-" + (columnWidths[i] + 2) + "s+", "").replace(' ', '-'));
+        }
+        System.out.println();
+        System.out.printf("| Floor %-3d |", floor + 1);
+        for (int slotNum = 0; slotNum < slots.get(floor).size(); slotNum++) {
+            Slot slot = slots.get(floor).get(slotNum);
+            String status = slot.isReserved ? "Res" : "Ava";
+            System.out.printf(" %-"+columnWidths[slotNum + 1]+"s |", status);
+        }
+        System.out.println();
+    }
+
+    // Print the bottom border
+    System.out.println("+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+");
+    System.out.println();
+}
+
+public void viewParkingCharges() {
+    System.out.println("Parking Charges:");
+    System.out.println("Car: $10 per hour");
+    System.out.println("Truck: $15 per hour");
+    System.out.println("Bike: $5 per hour");
+    System.out.println();
+}
+
 
 void displayAvailability() {
     // Find the maximum width of each column
