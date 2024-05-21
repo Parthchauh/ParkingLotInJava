@@ -12,48 +12,52 @@ public class ParkingLotDemo
         ParkingLot parkingLot = new ParkingLot("PR1234", nFloors, 10, 20, 10);
         Scanner scanner = new Scanner(System.in);
 
-       while (true) {
-        System.out.println("Choose an option:");
-        System.out.println("1. View parked vehicles");
-        System.out.println("2. Park a vehicle");
-        System.out.println("3. Display parking availability");
-        System.out.println("4. Unpark a vehicle");
-        System.out.println("5. Exit");
+       while (true) 
+       {
+            System.out.println("Choose an option:");
+            System.out.println("1. View parked vehicles");
+            System.out.println("2. Park a vehicle");
+            System.out.println("3. Display parking availability");
+            System.out.println("4. Unpark a vehicle");
+            System.out.println("5. Exit");
 
-        try {
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
 
-            switch (choice) {
-                case 1:
-                    viewParkedVehicles(parkingLot, scanner);
-                    break;
-                case 2:
-                    parkVehicle(parkingLot, scanner);
-                    break;
-                case 3:
-                    parkingLot.displayAvailability();
-                    break;
-                case 4:
-                    unparkVehicle(parkingLot, scanner);
-                    break;
-                case 5:
-                    System.out.println("Exiting...");
-                    return;
-                default:
-                    System.out.println("Invalid option. Please choose a number between 1 and 5.");
+                switch (choice) {
+                    case 1:
+                        viewParkedVehicles(parkingLot, scanner);
+                        break;
+                    case 2:
+                        parkVehicle(parkingLot, scanner);
+                        break;
+                    case 3:
+                        parkingLot.displayAvailability();
+                        break;
+                    case 4:
+                        unparkVehicle(parkingLot, scanner);
+                        break;
+                    case 5:
+                        System.out.println("Exiting...");
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please choose a number between 1 and 5.");
+                }
+            } 
+            catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Clear the invalid input
             }
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input. Please enter a number.");
-            scanner.nextLine(); // Clear the invalid input
-        }
-    }
-    }
+       }
+}
 
 
-private static void viewParkedVehicles(ParkingLot parkingLot, Scanner scanner) {
+private static void viewParkedVehicles(ParkingLot parkingLot, Scanner scanner) 
+{
     String type;
-    while (true) {
+    while (true) 
+    {
         System.out.println("Enter vehicle type (car/truck/bike): ");
         type = scanner.nextLine().toLowerCase(); // Convert input to lowercase
         if (type.equals("car") || type.equals("truck") || type.equals("bike")) {
@@ -74,7 +78,8 @@ private static void viewParkedVehicles(ParkingLot parkingLot, Scanner scanner) {
     int searchChoice = scanner.nextInt();
     scanner.nextLine(); // Consume newline
     
-    switch (searchChoice) {
+    switch (searchChoice) 
+    {
         case 1:
             searchByTicketId(parkingLot, scanner);
             break;
@@ -92,7 +97,8 @@ private static void viewParkedVehicles(ParkingLot parkingLot, Scanner scanner) {
     }
 }
 
-private static void unparkVehicle(ParkingLot parkingLot, Scanner scanner) {
+private static void unparkVehicle(ParkingLot parkingLot, Scanner scanner) 
+{
     System.out.println("Enter ticket ID or registration number to unpark the vehicle: ");
     String input = scanner.nextLine().toUpperCase(); // Convert input to uppercase for consistency
     
@@ -105,7 +111,8 @@ private static void unparkVehicle(ParkingLot parkingLot, Scanner scanner) {
         } else {
             System.out.println("Failed to unpark the vehicle. Invalid ticket ID.");
         }
-    } else {
+    } 
+    else {
         // Input is a registration number
         boolean success = parkingLot.unparkVehicleByRegistrationNumber(input);
         if (success) {
