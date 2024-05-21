@@ -1,8 +1,12 @@
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter; // Import DateTimeFormatter
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 class Slot {
     String type;
@@ -30,13 +34,15 @@ class Vehicle {
 
 public class ParkingLot {
     static final int MAX_FLOORS = 10; // Define the maximum number of floors
-    static final int SLOTS_PER_FLOOR = 20;
+    static final int SLOTS_PER_FLOOR = 10;
     String parkingLotId;
     List<List<Slot>> slots;
 
     int availableCarSlots;
     int availableTruckSlots;
     int availableBikeSlots;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     ParkingLot(String parkingLotId, int nFloors, int carSlotsPerFloor, int truckSlotsPerFloor, int bikeSlotsPerFloor) {
         this.parkingLotId = parkingLotId;
@@ -60,120 +66,145 @@ public class ParkingLot {
         }
     }
 
-    void displayAvailability() {
-        System.out.println("Parking Availability:");
-        
-        // Iterate over each floor
-        for (int floorNum = 1; floorNum <= slots.size(); floorNum++) {
-            System.out.println("Floor " + floorNum + ":");
-            List<Slot> floor = slots.get(floorNum - 1);
-            
-            // Iterate over each slot in the floor
-            for (int slotNum = 1; slotNum <= floor.size(); slotNum++) {
-                Slot slot = floor.get(slotNum - 1);
-                if (slot.vehicle == null) {
-                    // Slot is available
-                    System.out.print("[" + slotNum + "]   ______   "); // Represent available slot with a parking space
-                } else {
-                    // Slot is occupied
-                    switch (slot.vehicle.type) {
-                        case "car":
-                            System.out.print("[" + slotNum + "]  [ CAR ]  "); // Represent occupied slot with a car
-                            break;
-                        case "truck":
-                            System.out.print("[" + slotNum + "]  [TRUCK]  "); // Represent occupied slot with a truck
-                            break;
-                        case "bike":
-                            System.out.print("[" + slotNum + "]  [ BIKE]  "); // Represent occupied slot with a bike
-                            break;
-                        default:
-                            System.out.print("[" + slotNum + "]  [?????]  "); // Unknown vehicle type
-                    }
-                }
-            }
-            // Print a separator between floors
-            System.out.println(); // Move to the next line after displaying all slots on the floor
-            System.out.println("  -----------------------------------  "); // Add separator between floors
+    void writeToLogFile(String message) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("parking_log.txt", true));
+            writer.write(message);
+            writer.newLine();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+void displayAvailability() {
+    // Find the maximum width of each column
+    int[] columnWidths = new int[slots.get(0).size() + 1]; // +1 for the "Floor" column
+    for (int floor = 0; floor < slots.size(); floor++) {
+        for (int slotNum = 0; slotNum < slots.get(floor).size(); slotNum++) {
+            Slot slot = slots.get(floor).get(slotNum);
+            String vehicleType = (slot.vehicle != null) ? "[" + slot.vehicle.type.toUpperCase() + "]" : "[?????]";
+            if (vehicleType.length() > columnWidths[slotNum + 1]) {
+                columnWidths[slotNum + 1] = vehicleType.length();
+            }
+        }
+    }
+
+    System.out.println("+-----------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+");
+    System.out.println("| Floor     | Slot 1  | Slot 2  | Slot 3  | Slot 4  | Slot 5  | Slot 6  | Slot 7  | Slot 8  | Slot 9  | Slot 10 |");
+    System.out.println("+-----------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+");
+
+
+    // Print each floor and its slots
+    for (int floor = 0; floor < slots.size(); floor++) {
+        System.out.print("+--------+");
+        for (int i = 0; i < columnWidths.length; i++) {
+            System.out.print(String.format("%-" + (columnWidths[i] + 2) + "s+", "").replace(' ', '-'));
+        }
+        System.out.println();
+        System.out.printf("| Floor %-3d |", floor + 1);
+        for (int slotNum = 0; slotNum < slots.get(floor).size(); slotNum++) {
+            Slot slot = slots.get(floor).get(slotNum);
+            String vehicleType = (slot.vehicle != null) ? "[" + slot.vehicle.type.toUpperCase() + "]" : "[?????]";
+            System.out.printf(" %-"+columnWidths[slotNum + 1]+"s |", vehicleType);
+        }
+        System.out.println();
+    }
+
+    // Print the bottom border
+     System.out.println("+-----------+---------+---------+---------+---------+---------+---------+---------+---------+---------+---------+");
+    System.out.println();
+}
+
+
+
 
     public String parkVehicle(String type, String registration, int preferredFloor, int preferredSlot) {
-    // Check if the preferred floor and slot are within the range of available floors and slots
-    if (preferredFloor <= 0 || preferredFloor > slots.size() || preferredSlot <= 0 || preferredSlot > SLOTS_PER_FLOOR) {
-        return "Invalid preferred floor or slot. Please choose within the available range.";
-    }
-    
-    // Check if the preferred slot is available
-    Slot preferredSlotObj = slots.get(preferredFloor - 1).get(preferredSlot - 1);
-    if (preferredSlotObj.vehicle != null) {
-        return "Preferred slot is not available. Please choose another slot.";
-    }
-    
-    // Check if the preferred floor has available slots for the vehicle type
-    if (type.equals("car") && availableCarSlots <= 0) {
-        return "No available car slots on the preferred floor.";
-    } else if (type.equals("truck") && availableTruckSlots <= 0) {
-        return "No available truck slots on the preferred floor.";
-    } else if (type.equals("bike") && availableBikeSlots <= 0) {
-        return "No available bike slots on the preferred floor.";
-    }
-    
-    // Park the vehicle at the preferred slot
-    Slot slot = slots.get(preferredFloor - 1).get(preferredSlot - 1);
-    Vehicle vehicle = new Vehicle(type, registration);
-    slot.vehicle = vehicle;
-    slot.ticketId = parkingLotId + "_" + preferredFloor + "_" + preferredSlot;
-    slot.entryTime = LocalDateTime.now();
-    
-    // Update available slots
-    updateAvailableSlots(type, -1);
-    
-    return slot.ticketId; // Return only the ticket ID
-}
+        // Check if the preferred floor and slot are within the range of available floors and slots
+        if (preferredFloor <= 0 || preferredFloor > slots.size() || preferredSlot <= 0 || preferredSlot > SLOTS_PER_FLOOR) {
+            return "Invalid preferred floor or slot. Please choose within the available range.";
+        }
 
+        // Check if the preferred slot is available
+        Slot preferredSlotObj = slots.get(preferredFloor - 1).get(preferredSlot - 1);
+        if (preferredSlotObj.vehicle != null) {
+            return "Preferred slot is not available. Please choose another slot.";
+        }
 
+        // Check if the preferred floor has available slots for the vehicle type
+        if (type.equals("car") && availableCarSlots <= 0) {
+            return "No available car slots on the preferred floor.";
+        } else if (type.equals("truck") && availableTruckSlots <= 0) {
+            return "No available truck slots on the preferred floor.";
+        } else if (type.equals("bike") && availableBikeSlots <= 0) {
+            return "No available bike slots on the preferred floor.";
+        }
+
+        // Park the vehicle at the preferred slot
+        Slot slot = slots.get(preferredFloor - 1).get(preferredSlot - 1);
+        Vehicle vehicle = new Vehicle(type, registration);
+        slot.vehicle = vehicle;
+        slot.ticketId = parkingLotId + "_" + preferredFloor + "_" + preferredSlot;
+        slot.entryTime = LocalDateTime.now();
+
+        updateAvailableSlots(type, -1);
+        // Write to log file
+        String logMessage = "[" + LocalDateTime.now().format(formatter) + "] Vehicle parked - Type: " + type + ", Registration: " + registration + ", Floor: " + preferredFloor + ", Slot: " + preferredSlot;
+        writeToLogFile(logMessage);
+
+        return slot.ticketId; // Return only the ticket ID
+    }
 
     public boolean unparkVehicleByTicketId(String ticketId) {
-    for (List<Slot> floor : slots) {
-        for (Slot slot : floor) {
-            if (ticketId.equals(slot.ticketId)) {
-                calculateAndDisplayCharges(slot);
-                slot.vehicle = null;
-                slot.ticketId = null;
-                slot.entryTime = null;
-                return true;
-            }
-        }
-    }
-    return false;
-}
+        for (List<Slot> floor : slots) {
+            for (Slot slot : floor) {
+                if (ticketId.equals(slot.ticketId)) {
+                    calculateAndDisplayCharges(slot);
+                    slot.vehicle = null;
+                    slot.ticketId = null;
+                    slot.entryTime = null;
+                    updateAvailableSlots(slot.type, 1);
+                    // Write to log file
+                    String logMessage = "[" + LocalDateTime.now().format(formatter) + "] Vehicle unparked - Ticket ID: " + ticketId;
+                    writeToLogFile(logMessage);
 
-public boolean unparkVehicleByRegistrationNumber(String registrationNumber) {
-    for (List<Slot> floor : slots) {
-        for (Slot slot : floor) {
-            if (slot.vehicle != null && registrationNumber.equals(slot.vehicle.registration)) {
-                calculateAndDisplayCharges(slot);
-                slot.vehicle = null;
-                slot.ticketId = null;
-                slot.entryTime = null;
-                return true;
+                    return true;
+                }
             }
         }
+        return false;
     }
-    return false;
-}
+
+    public boolean unparkVehicleByRegistrationNumber(String registrationNumber) {
+        for (List<Slot> floor : slots) {
+            for (Slot slot : floor) {
+                if (slot.vehicle != null && registrationNumber.equals(slot.vehicle.registration)) {
+                    String ticketId = slot.ticketId; // Fix the ticketId reference
+                    calculateAndDisplayCharges(slot);
+                    slot.vehicle = null;
+                    slot.ticketId = null;
+                    slot.entryTime = null;
+                    updateAvailableSlots(slot.type, 1);
+                    // Write to log file
+                    String logMessage = "[" + LocalDateTime.now().format(formatter) + "] Vehicle unparked - Ticket ID: " + ticketId;
+                    writeToLogFile(logMessage);
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public boolean unparkVehicle(String input, Scanner scanner) {
-    // Check if the input is a ticket ID
-    if (input.startsWith(parkingLotId)) {
-        return unparkVehicleByTicketId(input);
-    } else {
-        // Input is a registration number, no need for scanner
-        return unparkVehicleByRegistrationNumber(input);
+        // Check if the input is a ticket ID
+        if (input.startsWith(parkingLotId)) {
+            return unparkVehicleByTicketId(input);
+        } else {
+            // Input is a registration number, no need for scanner
+            return unparkVehicleByRegistrationNumber(input);
+        }
     }
-}
-
-
 
     void unPark(String ticketId) {
         String[] extract = ticketId.split("_");
@@ -207,7 +238,6 @@ public boolean unparkVehicleByRegistrationNumber(String registrationNumber) {
                 return 0;
         }
     }
-
     void updateAvailableSlots(String type, int change) {
         switch (type) {
             case "car":
@@ -292,5 +322,4 @@ public boolean unparkVehicleByRegistrationNumber(String registrationNumber) {
         System.out.println("Vehicle not found.");
         return null; // Vehicle not found
     }
-
 }
